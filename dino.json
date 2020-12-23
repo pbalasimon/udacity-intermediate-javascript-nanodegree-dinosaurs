@@ -1,5 +1,5 @@
 {
-    "Dinos": [
+    "dinos": [
         {
             "species": "Triceratops",
             "weight": 13000,
