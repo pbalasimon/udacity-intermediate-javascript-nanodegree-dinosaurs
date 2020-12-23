@@ -11,6 +11,19 @@ class Animal {
         this.when = when;
         this.fact = fact;
     }
+
+    getImageURL() {
+        return `./images/${this.species.toLowerCase()}.png`
+    }
+
+    getGrid() {
+        return `
+            <div class='grid-item'>
+                <span>${this.species === 'human' ? `<h3>${this.name}</h3>` : `<h3>${this.species}</h3>`}</span>
+                <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
+            </div>
+        `
+    }
 }
 
 // Create Human class
@@ -53,6 +66,13 @@ const handleCompare = async () => {
     console.log(human);
     dinos = await getDinos();
     console.log(dinos);
+
+    const grid = document.querySelector("#grid");
+    let HTMLGrid = "";
+    for (dino of dinos) {
+        HTMLGrid = HTMLGrid.concat(dino.getGrid());
+    }
+    grid.innerHTML = HTMLGrid;
 }
 
 
