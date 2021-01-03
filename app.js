@@ -105,16 +105,22 @@ const getDinos = async () => {
 const handleCompare = async () => {
 
     // FIXME Validate form
+    const name = document.querySelector("#name").value.trim();
+    const feet = document.querySelector("#feet").value.trim();
+    const inches = document.querySelector("#inches").value.trim();
+    const weight = document.querySelector("#weight").value.trim();
+    const diet = document.querySelector("#diet").value.trim();
 
+    if (!name || !feet || !inches || !weight || !diet) {
+        alert("Please complete all the fields of the form");
+        return;
+    }
+
+    const height = (feet * 12) + inches;
     document.querySelector("#dino-compare").style.display = 'none';
     document.querySelector("#compare-again").style.display = 'block';
 
-    const name = document.querySelector("#name").value;
-    const feet = document.querySelector("#feet").value;
-    const inches = document.querySelector("#inches").value;
-    const weight = document.querySelector("#weight").value;
-    const diet = document.querySelector("#diet").value;
-    human = new Human(name, weight, 100, diet);
+    human = new Human(name, weight, height, diet);
     console.log(human);
     dinos = await getDinos();
     console.log(dinos);
