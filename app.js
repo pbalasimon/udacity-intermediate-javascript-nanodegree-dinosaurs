@@ -25,7 +25,7 @@ class Dino extends Animal {
     getGrid() {
         return `
             <div class='grid-item'>
-                ${this.species === 'human' ? `<h3>${this.name}</h3>` : `<h3>${this.species}</h3>`}
+                <h3>${this.species}</h3>
                 <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
                 <h4>${this.fact}</h4>
             </div>
@@ -38,6 +38,14 @@ class Human extends Animal {
     constructor(name, weight, height, diet) {
         super("human", weight, height, diet, null, null);
         this.name = name;
+    }
+    getGrid() {
+        return `
+            <div class='grid-item'>
+                <h3>${this.name}</h3>
+                <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
+            </div>
+        `
     }
 }
 
@@ -58,6 +66,10 @@ function compareDiet(animal, { diet, name }) {
 }
 
 function getRandomFact(animal) {
+
+    if (animal.species === 'Pigeon') {
+        return "All birds are Dinosaurs.";
+    }
 
     let fact = null;
     const random = getRandomNumber(1, 6);
@@ -125,10 +137,14 @@ const handleCompare = async () => {
     dinos = await getDinos();
     console.log(dinos);
 
+    const [firstDino, secondDino, thirdDino, fourthDino, ...restDinos] = dinos;
+    const animals = [firstDino, secondDino, thirdDino, fourthDino, human, ...restDinos];
+    console.log(animals);
+
     const grid = document.querySelector("#grid");
     let HTMLGrid = "";
-    for (dino of dinos) {
-        HTMLGrid = HTMLGrid.concat(dino.getGrid());
+    for (animal of animals) {
+        HTMLGrid = HTMLGrid.concat(animal.getGrid());
     }
     grid.innerHTML = HTMLGrid;
 }
