@@ -105,6 +105,10 @@ const getDinos = async () => {
 const handleCompare = async () => {
 
     // FIXME Validate form
+
+    document.querySelector("#dino-compare").style.display = 'none';
+    document.querySelector("#compare-again").style.display = 'block';
+
     const name = document.querySelector("#name").value;
     const feet = document.querySelector("#feet").value;
     const inches = document.querySelector("#inches").value;
@@ -123,6 +127,11 @@ const handleCompare = async () => {
     grid.innerHTML = HTMLGrid;
 }
 
+const handleCompareAgain = () => {
+    document.querySelector("#grid").innerHTML = '';
+    document.querySelector("#dino-compare").style.display = 'block';
+    document.querySelector("#compare-again").style.display = 'none';
+}
 
 // Use IIFE to get human data from form
 
@@ -149,4 +158,5 @@ const handleCompare = async () => {
 // On button click, prepare and display infographic
 (() => {
     document.querySelector("#compare").addEventListener('click', handleCompare);
+    document.querySelector("#compare-again").addEventListener('click', handleCompareAgain);
 })();
