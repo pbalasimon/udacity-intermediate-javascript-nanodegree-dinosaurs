@@ -1,15 +1,13 @@
 let dinos = [];
 let human = null;
 
-// Create Animal class
+// Animal class
 class Animal {
-    constructor(species, weight, height, diet, where, when) {
+    constructor(species, weight, height, diet) {
         this.species = species;
         this.weight = weight;
         this.height = height;
         this.diet = diet;
-        this.where = where;
-        this.when = when;
     }
 
     getImageURL() {
@@ -21,7 +19,10 @@ class Dino extends Animal {
     constructor(species, weight, height, diet, where, when) {
         super(species, weight, height, diet, where, when);
         this.fact = getRandomFact(this);
+        this.where = where;
+        this.when = when;
     }
+
     getGrid() {
         return `
             <div class='grid-item'>
@@ -33,7 +34,7 @@ class Dino extends Animal {
     }
 }
 
-// Create Human class
+// Human class
 class Human extends Animal {
     constructor(name, weight, height, diet) {
         super("human", weight, height, diet, null, null);
@@ -48,23 +49,51 @@ class Human extends Animal {
         `
     }
 }
-
+/**
+ * @description Generate a random number between min and max
+ * @param {number} min
+ * @param {number} max
+ * @returns {number} a random number
+ */
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+/**
+ * @description Compares animal's weigth to human's weight
+ * @param {string} animal
+ * @param {object} param1
+ * @returns The fact of the weight comparation
+ */
 function compareWeight(animal, { weight, name }) {
     return `The ${animal.species} is ${animal.weight - weight >= 0 ? 'heavier' : 'lighter'} than ${name}`;
 }
 
+/**
+ * @description Compares animal's height to human's height
+ * @param {string} animal
+ * @param {object} param1
+ * @returns The fact of the height comparation
+ */
 function compareHeight(animal, { height, name }) {
     return `The ${animal.species} is ${animal.height - height >= 0 ? 'taller' : 'shorter'} than ${name}`;
 }
 
+/**
+ * @description Compares animal's diet to human's diet
+ * @param {string} animal
+ * @param {object} param1
+ * @returns The fact of the diet comparation
+ */
 function compareDiet(animal, { diet, name }) {
     return `The ${animal.species} is a ${animal.diet} ${animal.diet === diet.toLowerCase() ? `just like ${name}` : `while ${name} is a ${diet}`}`;
 }
 
+/**
+ * @description Get random fact for animal
+ * @param {object} animal
+ * @returns Random fact
+ */
 function getRandomFact(animal) {
 
     if (animal.species === 'Pigeon') {
@@ -91,13 +120,15 @@ function getRandomFact(animal) {
             fact = compareDiet(animal, human);
             break;
         default:
-            fact = 'default case';
+            fact = '';
     }
 
     return fact;
 }
 
-// Create Dino Objects
+/**
+ * Create Dino Objects
+ */
 const getDinos = async () => {
     try {
         const data = await fetch("dino.json");
@@ -113,10 +144,11 @@ const getDinos = async () => {
     }
 }
 
-// Create Human Object
+/**
+ * Compare Button Handler
+ */
 const handleCompare = async () => {
 
-    // FIXME Validate form
     const name = document.querySelector("#name").value.trim();
     const feet = document.querySelector("#feet").value.trim();
     const inches = document.querySelector("#inches").value.trim();
@@ -133,9 +165,7 @@ const handleCompare = async () => {
     document.querySelector("#compare-again").style.display = 'block';
 
     human = new Human(name, weight, height, diet);
-    console.log(human);
     dinos = await getDinos();
-    console.log(dinos);
 
     const [firstDino, secondDino, thirdDino, fourthDino, ...restDinos] = dinos;
     const animals = [firstDino, secondDino, thirdDino, fourthDino, human, ...restDinos];
@@ -149,35 +179,18 @@ const handleCompare = async () => {
     grid.innerHTML = HTMLGrid;
 }
 
+/**
+ * Compare Again Button Handler
+ */
 const handleCompareAgain = () => {
     document.querySelector("#grid").innerHTML = '';
     document.querySelector("#dino-compare").style.display = 'block';
     document.querySelector("#compare-again").style.display = 'none';
 }
 
-// Use IIFE to get human data from form
-
-
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-// Create Dino Compare Method 3
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-// Generate Tiles for each Dino in Array
-
-// Add tiles to DOM
-
-// Remove form from screen
-
-
-// On button click, prepare and display infographic
+/**
+ * Use IIFE to add the event listeners for the buttons
+ */
 (() => {
     document.querySelector("#compare").addEventListener('click', handleCompare);
     document.querySelector("#compare-again").addEventListener('click', handleCompareAgain);
