@@ -1,26 +1,33 @@
 let dinos = [];
+let human = null;
 
 // Create Animal class
 class Animal {
-    constructor(species, weight, height, diet, where, when, fact) {
+    constructor(species, weight, height, diet, where, when) {
         this.species = species;
         this.weight = weight;
         this.height = height;
         this.diet = diet;
         this.where = where;
         this.when = when;
-        this.fact = fact;
     }
 
     getImageURL() {
         return `./images/${this.species.toLowerCase()}.png`
     }
+}
 
+class Dino extends Animal {
+    constructor(species, weight, height, diet, where, when) {
+        super(species, weight, height, diet, where, when);
+        this.fact = getRandomFact(this);
+    }
     getGrid() {
         return `
             <div class='grid-item'>
-                <span>${this.species === 'human' ? `<h3>${this.name}</h3>` : `<h3>${this.species}</h3>`}</span>
+                ${this.species === 'human' ? `<h3>${this.name}</h3>` : `<h3>${this.species}</h3>`}
                 <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
+                <h4>${this.fact}</h4>
             </div>
         `
     }
@@ -28,14 +35,55 @@ class Animal {
 
 // Create Human class
 class Human extends Animal {
-    constructor(name, feet, inches, weight, diet) {
-        super("human", weight, null, diet, null, null, null);
+    constructor(name, weight, height, diet) {
+        super("human", weight, height, diet, null, null);
         this.name = name;
-        this.feet = feet;
-        this.inches = inches;
     }
 }
 
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function compareWeight(animal, { weight, name }) {
+    return `The ${animal.species} is ${animal.weight - weight >= 0 ? 'heavier' : 'lighter'} than ${name}`;
+}
+
+function compareHeight(animal, { height, name }) {
+    return `The ${animal.species} is ${animal.height - height >= 0 ? 'taller' : 'shorter'} than ${name}`;
+}
+
+function compareDiet(animal, { diet, name }) {
+    return `The ${animal.species} is a ${animal.diet} ${animal.diet === diet.toLowerCase() ? `just like ${name}` : `while ${name} is a ${diet}`}`;
+}
+
+function getRandomFact(animal) {
+
+    let fact = null;
+    const random = getRandomNumber(1, 6);
+
+    switch (random) {
+        case 1:
+            fact = `The ${animal.species} lived in ${animal.where}.`;
+            break;
+        case 2:
+            fact = `The ${animal.species} lived in ${animal.when} period.`;
+            break;
+        case 3:
+            fact = compareWeight(animal, human);
+            break;
+        case 4:
+            fact = compareHeight(animal, human);
+            break;
+        case 5:
+            fact = compareDiet(animal, human);
+            break;
+        default:
+            fact = 'default case';
+    }
+
+    return fact;
+}
 
 // Create Dino Objects
 const getDinos = async () => {
@@ -44,8 +92,8 @@ const getDinos = async () => {
         const json = await data.json();
         const dinos = [];
         json.dinos.map(dino => {
-            const { species, weight, height, diet, where, when, fact } = dino;
-            dinos.push(new Animal(species, weight, height, diet, where, when, fact));
+            const { species, weight, height, diet, where, when } = dino;
+            dinos.push(new Dino(species, weight, height, diet, where, when));
         });
         return dinos;
     } catch (error) {
@@ -62,7 +110,7 @@ const handleCompare = async () => {
     const inches = document.querySelector("#inches").value;
     const weight = document.querySelector("#weight").value;
     const diet = document.querySelector("#diet").value;
-    const human = new Human(name, feet, inches, weight, diet);
+    human = new Human(name, weight, 100, diet);
     console.log(human);
     dinos = await getDinos();
     console.log(dinos);
