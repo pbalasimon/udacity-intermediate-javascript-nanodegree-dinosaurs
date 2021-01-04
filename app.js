@@ -169,7 +169,6 @@ const handleCompare = async () => {
 
     const [firstDino, secondDino, thirdDino, fourthDino, ...restDinos] = dinos;
     const animals = [firstDino, secondDino, thirdDino, fourthDino, human, ...restDinos];
-    console.log(animals);
     const grid = document.querySelector('#grid');
     let HTMLGrid = '';
     for (animal of animals) {
