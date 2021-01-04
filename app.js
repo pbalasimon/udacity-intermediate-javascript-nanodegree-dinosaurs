@@ -18,9 +18,9 @@ class Animal {
 class Dino extends Animal {
     constructor(species, weight, height, diet, where, when) {
         super(species, weight, height, diet, where, when);
-        this.fact = getRandomFact(this);
         this.where = where;
         this.when = when;
+        this.fact = getRandomFact(this);
     }
 
     getGrid() {
@@ -169,7 +169,7 @@ const handleCompare = async () => {
 
     const [firstDino, secondDino, thirdDino, fourthDino, ...restDinos] = dinos;
     const animals = [firstDino, secondDino, thirdDino, fourthDino, human, ...restDinos];
-
+    console.log(animals);
     const grid = document.querySelector('#grid');
     let HTMLGrid = '';
     for (animal of animals) {
