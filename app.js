@@ -27,7 +27,7 @@ class Dino extends Animal {
         return `
             <div class='grid-item'>
                 <h3>${this.species}</h3>
-                <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
+                <img src='${this.getImageURL()}' alt='Image of a ${this.species}'>
                 <h4>${this.fact}</h4>
             </div>
         `
@@ -37,14 +37,14 @@ class Dino extends Animal {
 // Human class
 class Human extends Animal {
     constructor(name, weight, height, diet) {
-        super("human", weight, height, diet, null, null);
+        super('human', weight, height, diet, null, null);
         this.name = name;
     }
     getGrid() {
         return `
             <div class='grid-item'>
                 <h3>${this.name}</h3>
-                <img src="${this.getImageURL()}" alt="Image of a ${this.species}">
+                <img src='${this.getImageURL()}' alt='Image of a ${this.species}'>
             </div>
         `
     }
@@ -97,7 +97,7 @@ function compareDiet(animal, { diet, name }) {
 function getRandomFact(animal) {
 
     if (animal.species === 'Pigeon') {
-        return "All birds are Dinosaurs.";
+        return 'All birds are Dinosaurs.';
     }
 
     let fact = null;
@@ -131,7 +131,7 @@ function getRandomFact(animal) {
  */
 const getDinos = async () => {
     try {
-        const data = await fetch("dino.json");
+        const data = await fetch('dino.json');
         const json = await data.json();
         const dinos = [];
         json.dinos.map(dino => {
@@ -149,20 +149,20 @@ const getDinos = async () => {
  */
 const handleCompare = async () => {
 
-    const name = document.querySelector("#name").value.trim();
-    const feet = document.querySelector("#feet").value.trim();
-    const inches = document.querySelector("#inches").value.trim();
-    const weight = document.querySelector("#weight").value.trim();
-    const diet = document.querySelector("#diet").value.trim();
+    const name = document.querySelector('#name').value.trim();
+    const feet = document.querySelector('#feet').value.trim();
+    const inches = document.querySelector('#inches').value.trim();
+    const weight = document.querySelector('#weight').value.trim();
+    const diet = document.querySelector('#diet').value.trim();
 
     if (!name || !feet || !inches || !weight || !diet) {
-        alert("Please complete all the fields of the form");
+        alert('Please complete all the fields of the form');
         return;
     }
 
     const height = (feet * 12) + inches;
-    document.querySelector("#dino-compare").style.display = 'none';
-    document.querySelector("#compare-again").style.display = 'block';
+    document.querySelector('#dino-compare').style.display = 'none';
+    document.querySelector('#compare-again').style.display = 'block';
 
     human = new Human(name, weight, height, diet);
     dinos = await getDinos();
@@ -170,8 +170,8 @@ const handleCompare = async () => {
     const [firstDino, secondDino, thirdDino, fourthDino, ...restDinos] = dinos;
     const animals = [firstDino, secondDino, thirdDino, fourthDino, human, ...restDinos];
 
-    const grid = document.querySelector("#grid");
-    let HTMLGrid = "";
+    const grid = document.querySelector('#grid');
+    let HTMLGrid = '';
     for (animal of animals) {
         HTMLGrid = HTMLGrid.concat(animal.getGrid());
     }
@@ -182,15 +182,15 @@ const handleCompare = async () => {
  * Compare Again Button Handler
  */
 const handleCompareAgain = () => {
-    document.querySelector("#grid").innerHTML = '';
-    document.querySelector("#dino-compare").style.display = 'block';
-    document.querySelector("#compare-again").style.display = 'none';
+    document.querySelector('#grid').innerHTML = '';
+    document.querySelector('#dino-compare').style.display = 'block';
+    document.querySelector('#compare-again').style.display = 'none';
 }
 
 /**
  * Use IIFE to add the event listeners for the buttons
  */
 (() => {
-    document.querySelector("#compare").addEventListener('click', handleCompare);
-    document.querySelector("#compare-again").addEventListener('click', handleCompareAgain);
+    document.querySelector('#compare').addEventListener('click', handleCompare);
+    document.querySelector('#compare-again').addEventListener('click', handleCompareAgain);
 })();
